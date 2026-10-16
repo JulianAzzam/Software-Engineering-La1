@@ -1,5 +1,4 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,18 +40,4 @@ public class UsersApp{
             System.out.println(user);
         }
     }
-
-    User parseUser(String user){
-        String[] x = user.trim().split("\\s+");
-        if (x.length == 2){
-            return new User(x[0],x[1]);
-        }
-        return null;
-    }
-    private static final String EMAIL_REGEX =
-            "[a-zA-Z0-9._+%-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*\\.[a-zA-Z]{2,}";
-
-    private static final String PASSWORD_REGEX =
-            "(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[#@!+.,])[a-zA-Z0-9#@!+.,]{8,12}";
-
 }

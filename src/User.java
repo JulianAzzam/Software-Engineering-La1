@@ -55,9 +55,6 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     @Override
     public String toString() {
