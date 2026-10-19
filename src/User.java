@@ -6,7 +6,7 @@ public class User {
             "[a-zA-Z0-9._+%-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*\\.[a-zA-Z]{2,}";
 
     private static final String PASSWORD_REGEX =
-            "(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[#@!+.,])[a-zA-Z0-9#@!+.,%^]{8,12}";
+            "(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])[a-zA-Z0-9!@#$%^&*()]{8,12}";
 
     public User(String username, String password) {
         String emailError = validateEmail(username);
