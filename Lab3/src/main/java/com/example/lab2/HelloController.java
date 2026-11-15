@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -21,6 +22,16 @@ public class HelloController {
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;
+    }
+
+    @FXML
+    private Button loginButton;
+
+    private AttemptTracker tracker;
+    private Thread countdownThread;
+
+    public void setTracker(AttemptTracker tracker) {
+        this.tracker = tracker;
     }
 
     @FXML
@@ -65,6 +76,37 @@ public class HelloController {
         infoLabel.setText("Invalid username or password");
     }
 
+
+    private void startCountdown(String email) {
+
+        if (countdownThread != null) {
+            countdownThread.interrupt();
+        }
+
+        usernameTF.setDisable(true);
+        passwordTF.setDisable(true);
+        loginButton.setDisable(true);
+
+        CountdownTask task = new CountdownTask(tracker, email,
+
+                // Called every second
+                seconds -> infoLabel.setText(
+                        "Account blocked. " + seconds + " seconds remaining"
+                ),
+
+                // Called when the block expires
+                () -> {
+                    infoLabel.setText("");
+                    usernameTF.setDisable(false);
+                    passwordTF.setDisable(false);
+                    loginButton.setDisable(false);
+                }
+        );
+
+        countdownThread = new Thread(task);
+        countdownThread.setDaemon(true);
+        countdownThread.start();
+    }
 
 
 }

@@ -30,6 +30,8 @@ public class HelloApplication extends Application {
         int n = Integer.parseInt(args.get(0));
         int t = Integer.parseInt(args.get(1));
         AttemptTracker tracker = new AttemptTracker(n,t);
+        controller.setTracker(tracker);
+
         FailureWorker worker1 = new FailureWorker(queue, tracker);
         FailureWorker worker2 = new FailureWorker(queue, tracker);
 
