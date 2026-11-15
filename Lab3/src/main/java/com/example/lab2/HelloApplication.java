@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,7 +25,11 @@ public class HelloApplication extends Application {
         HelloController controller = loader.getController();
         controller.setUsers(users);
         BlockingQueue<FailedAttempt> queue = new LinkedBlockingQueue<>();
+        List<String> args = getParameters().getRaw();
 
+        int n = Integer.parseInt(args.get(0));
+        int t = Integer.parseInt(args.get(1));
+        AttemptTracker tracker = new AttemptTracker(n,t);
         FailureWorker worker1 = new FailureWorker(queue, tracker);
         FailureWorker worker2 = new FailureWorker(queue, tracker);
 
