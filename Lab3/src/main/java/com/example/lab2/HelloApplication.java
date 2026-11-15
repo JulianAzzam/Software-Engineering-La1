@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class HelloApplication extends Application {
     @Override
@@ -21,6 +23,13 @@ public class HelloApplication extends Application {
 
         HelloController controller = loader.getController();
         controller.setUsers(users);
+        BlockingQueue<FailedAttempt> queue = new LinkedBlockingQueue<>();
+
+        FailureWorker worker1 = new FailureWorker(queue, tracker);
+        FailureWorker worker2 = new FailureWorker(queue, tracker);
+
+        worker1.start();
+        worker2.start();
 
         stage.setScene(scene);
         stage.show();

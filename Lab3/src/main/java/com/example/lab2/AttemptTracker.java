@@ -16,13 +16,14 @@ public class AttemptTracker {
         this.lockTime = lockTime;
     }
 
-    public void increaseAttempt(String email) {
+    public LoginResult increaseAttempt(String email) {
         UserState user = hashMap.computeIfAbsent(
                 email, k -> new UserState()
         );
 
-        user.recordFailure(maxRetries, lockTime);
+        return user.recordFailure(maxRetries, lockTime);
     }
+
     public boolean isBlocked(String email) {
         UserState user = hashMap.get(email);
         return user != null && user.isBlocked();

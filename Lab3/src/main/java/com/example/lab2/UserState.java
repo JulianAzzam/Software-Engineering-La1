@@ -4,15 +4,13 @@ public class UserState {
     private int failureCounter = 0;
     private long blockedUntil = 0;
 
-    public synchronized void recordFailure(int maxRetries, int lockTime) {
+    public synchronized LoginResult recordFailure(int maxRetries, int lockTime) {
         long now = System.currentTimeMillis();
 
-        // Ignore failures during blocking
         if (now < blockedUntil) {
-            return;
+            return LoginResult.blocked(getRemainingSeconds());
         }
 
-        // Reset after blocking expires
         if (blockedUntil > 0) {
             failureCounter = 0;
             blockedUntil = 0;
@@ -20,10 +18,12 @@ public class UserState {
 
         failureCounter++;
 
-        // Block after reaching the maximum failures
         if (failureCounter >= maxRetries) {
             blockedUntil = now + lockTime * 1000L;
+            return LoginResult.blocked(getRemainingSeconds());
         }
+
+        return LoginResult.failed(maxRetries - failureCounter);
     }
 
     public synchronized boolean isBlocked() {
